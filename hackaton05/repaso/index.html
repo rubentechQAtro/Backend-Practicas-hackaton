@@ -38,6 +38,71 @@
         );
       min-height: 100vh;
     }
+
+    .calc-btn {
+      transition: all 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .calc-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .calc-btn:active {
+      opacity: 1;
+    }
+
+    .display-glow {
+      box-shadow:
+        inset 0 0 30px rgba(120, 80, 255, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .history-item {
+      animation: slideIn 0.25s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .danger {
+      color: red !important;
+    }
+
+    #historial::-webkit-scrollbar {
+      width: 4px;
+    }
+    #historial::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    #historial::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
   </style>
   <body class="flex items-center justify-center font-display p-4">
     <!-- Card -->
@@ -51,10 +116,10 @@
 
       <!-- Body -->
 
-      <div class="rounded-3xl p-5 shadow-2xl shadow-black/50">
+      <div class="glass rounded-3xl p-5 shadow-2xl shadow-black/50">
         <!-- display -->
 
-        <div class="bg-black/40 rounded-2xl p-5 mb-4 border border-white/5">
+        <div class="display-glow bg-black/40 rounded-2xl p-5 mb-4 border border-white/5">
           <div
             id="operacionAnterior"
             class="text-right text-white/30 text-sm font-mono h-5 truncate"
@@ -68,106 +133,139 @@
         </div>
 
         <!-- Historial -->
-        <div id="historialContainer">
-          <div id="historial"></div>
+        <div id="historialContainer" class="hidden mb-4">
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span
+              class="text-white/30 text-xs font-medium tracking-widest uppercase"
+              >historial</span
+            >
+            <button
+              onclick="calculadora.limpiarHistorial()"
+              class="text-white/20 hover:text-red-400/60 text-xs transition-colors ease-in-out"
+            >
+              limpiar
+            </button>
+          </div>
+          <div
+            id="historial"
+            class="bg-black/30 rounded-xl p-3 max-h-28 overflow-y-auto border border-white/5 space-y-1"
+          ></div>
         </div>
 
         <!-- Buttons -->
 
         <div class="grid grid-cols-4 gap-2.5">
           <!-- Primera fila -->
-          <button onclick="calculadora.limpiar()"
-            class="bg-red-500/15 hover:bg-red-500/25 text-red-400 font-semibold rounded-xl h-14 text-sm border border-red-500/10"
+          <button
+            onclick="calculadora.limpiar()"
+            class="calc-btn bg-red-500/15 hover:bg-red-500/25 text-red-400 font-semibold rounded-xl h-14 text-sm border border-red-500/10"
           >
             AC
           </button>
 
-          <button onclick="calculadora.borrar()"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
-          >⌫</button>
+          <button
+            onclick="calculadora.borrar()"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          >
+            ⌫
+          </button>
 
-          <button onclick="calculadora.porcentaje()"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.porcentaje()"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             %
           </button>
 
-          <button onclick="calculadora.setOperador('/')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.setOperador('/')"
+            class="calc-btn bg-amber-500/15 hover:bg-amber-500/25 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             /
           </button>
 
           <!-- Segunda Fila -->
 
-          <button onclick="calculadora.agregarNumero('7')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('7')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             7
           </button>
-          <button onclick="calculadora.agregarNumero('8')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('8')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             8
           </button>
-          <button onclick="calculadora.agregarNumero('9')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('9')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             9
           </button>
-          <button onclick="calculadora.setOperador('*')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.setOperador('*')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             x
           </button>
 
           <!-- Tercera Fila -->
-          <button onclick="calculadora.agregarNumero('4')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('4')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             4
           </button>
 
-          <button onclick="calculadora.agregarNumero('5')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('5')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             5
           </button>
 
-          <button onclick="calculadora.agregarNumero('6')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('6')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             6
           </button>
 
-          <button onclick="calculadora.setOperador('-')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.setOperador('-')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             -
           </button>
 
           <!-- Cuarta Fila -->
 
-          <button onclick="calculadora.agregarNumero('1')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('1')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             1
           </button>
 
-          <button onclick="calculadora.agregarNumero('2')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('2')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             2
           </button>
 
-          <button onclick="calculadora.agregarNumero('3')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('3')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             3
           </button>
 
-          <button onclick="calculadora.setOperador('+')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.setOperador('+')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             +
           </button>
@@ -175,25 +273,29 @@
           <!-- Quinta Fila -->
 
           <button
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+            onclick="calculadora.toogleSigno()"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             +/-
           </button>
 
-          <button onclick="calculadora.agregarNumero('0')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('0')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             0
           </button>
 
-          <button onclick="calculadora.agregarNumero('.')"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.agregarNumero('.')"
+            class="calc-btn bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             .
           </button>
 
-          <button onclick="calculadora.calcular()"
-            class="bg-white/5 hover:bg-white/10 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
+          <button
+            onclick="calculadora.calcular()"
+            class="calc-btn bg-violet-500/30 hover:bg-violet-500/25 text-white/60 font-semibold rounded-xl h-14 text-sm border border-white/5"
           >
             =
           </button>
@@ -215,6 +317,8 @@
       }
 
       ejecutar() {
+        this.#validarDivision();
+
         const operaciones = {
           "+": (a, b) => a + b,
           "-": (a, b) => a - b,
@@ -227,12 +331,19 @@
         return resultado;
       }
 
+      #validarDivision() {
+        if (this.#operador === "/" && this.#num2 === 0) {
+          throw new Error("No se puede divir entre cero");
+        }
+      }
+
       toString() {
         const s = this.#simbolos[this.#operador];
 
         return `${this.#num1} ${s} ${this.#num2}`;
       }
     }
+
     class Historial {
       #registros = [];
       #maxRegistros;
@@ -281,6 +392,33 @@
 
       mostrarOperacion(texto) {
         this.#operacionEl.textContent = texto;
+      }
+
+      mostrarError(mensaje) {
+        this.#displayEl.textContent = mensaje;
+        this.#displayEl.classList.add("danger");
+        setTimeout(() => {
+          this.#displayEl.classList.remove("danger");
+          this.#displayEl.textContent = "0";
+        }, 1500);
+      }
+
+      actualizarHistorial(registros) {
+        if (registros.length === 0) {
+          this.#historialContainer.classList.add("hidden");
+          return;
+        }
+
+        this.#historialContainer.classList.remove("hidden");
+        this.#historialEl.innerHTML = registros
+          .map(
+            (item) => `
+        <div class="flex justify-between text-xs font-mono py-1 px-1 hover:bg-white/5">
+                <span class="text-white/25">${item.expresion}</span>
+               <span class="text-white/50">${item.resultado}</span>
+            </div>`,
+          )
+          .join("");
       }
     }
 
@@ -352,13 +490,13 @@
           const resultado = operacion.ejecutar();
 
           this.#historial.agregar(operacion.toString(), resultado);
-
+          this.#pantalla.actualizarHistorial(this.#historial.obtenerTodos());
           this.#pantalla.mostrarOperacion(`${operacion.toString()} =`);
           this.#valorActual = resultado.toString();
           this.#pantalla.mostrarValor(this.#valorActual);
         } catch (error) {
-          // this.#pantalla.
-          this.#valorActual = 0;
+          this.#pantalla.mostrarError("Error");
+          this.#valorActual = "0";
         }
 
         this.#operador = null;
@@ -388,6 +526,21 @@
       porcentaje() {
         this.#valorActual = (parseFloat(this.#valorActual) / 100).toString();
         this.#pantalla.mostrarValor(this.#valorActual);
+      }
+
+      toogleSigno() {
+        if (this.#valorActual === "0") return;
+
+        this.#valorActual = this.#valorActual.startsWith("-")
+          ? this.#valorActual.slice(1)
+          : "-" + this.#valorActual;
+
+        this.#pantalla.mostrarValor(this.#valorActual);
+      }
+
+      limpiarHistorial() {
+        this.#historial.limpiar();
+        this.#pantalla.actualizarHistorial([]);
       }
     }
 
