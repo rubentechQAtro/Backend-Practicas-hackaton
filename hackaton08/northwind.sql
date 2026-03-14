@@ -139,5 +139,28 @@ order by num_pedidos;
 
 -- Ejercicios con Subconsultas
 -- ¿Cual es el producto con el precio mínimo más bajo? (usando subconsultas)
+select * from public.products where unit_price = (select min(unit_price) from public.products);
 
+-- ¿Cual es el producto cuyo precio sea al menos 10 veces el pedido mínimo (quantity) de los pedidos (OrderDetails)?
+select * from public.products
+where unit_price >= 10 * (select min(quantity) from public.order_details);
 
+-- ¿Cuales son los registros de productos (Products) cuyo precio (price) sea mayor
+-- que el máximo de los precios de los productos cuyo id sea 3, 6, 9 y 10?
+select * from products
+where unit_price > (
+    select max(unit_price) from products
+                           where product_id in (1,6,9,10)
+    );
+
+-- ¿Cuales son los registros de productos (Products) cuyo
+-- ProductID sea un valor que esté en Shippers.ShipperID?
+select * from public.products
+where unit_price in (select shipper_id from shippers);
+
+-- ¿Qué clientes (Customers) tenemos registrados, que estén
+-- en ciudades de nuestros proveedores (Suppliers)?
+select * from public.customers c
+where c.city in (
+    select s.city from suppliers s
+    );
