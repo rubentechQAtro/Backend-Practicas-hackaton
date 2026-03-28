@@ -29,18 +29,29 @@ Task.init(
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
+
     },
+completed: {
+  type: DataTypes.BOOLEAN,
+  defaultValue: false,
+},
+userId: {
+  type: DataTypes.INTEGER,
+  allowNull: false,
+},
+
   },
   {
     sequelize,
     modelName: "Task",
     tableName: "tasks",
     timestamps: true,
-  },
+  }
 );
 
 Task.beforeValidate((task) => {
   if (task.title) task.title = task.title.trim();
 });
+
 
 module.exports = Task;

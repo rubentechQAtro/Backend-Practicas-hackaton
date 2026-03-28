@@ -23,7 +23,7 @@ app.get("/", (_req, res) => {
 // ROUTES
 app.use("/api/", router);
 
-// MANEJO GLOBAL DE ERRORES
+
 app.use(errorHandler);
 
 async function start(params) {
